@@ -1,4 +1,8 @@
 repositories:
+  serial:
+    type: git
+    url: https://github.com/wjwwood/serial.git
+    version: master
   realsense-ros:
     type: git
     url: https://github.com/realsenseai/realsense-ros.git
