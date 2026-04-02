@@ -56,6 +56,11 @@ COPY ros2_ws/src /tmp/local_src
 RUN mkdir -p src && \
     vcs import src < /tmp/dependencies.repos && \
     cp -a /tmp/local_src/. src/
+
+RUN . /opt/ros/${ROS_DISTRO}/setup.sh && \
+    cmake -S /tmp/local_src/serial -B /tmp/local_src/serial/build -DCMAKE_BUILD_TYPE=Release && \
+    cmake --build /tmp/local_src/serial/build -j$(nproc) && \
+    cmake --install /tmp/local_src/serial/build
     
 RUN git clone https://github.com/atenpas/gpd.git /tmp/gpd && \
     cd /tmp/gpd && \
