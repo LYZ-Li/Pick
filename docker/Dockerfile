@@ -4,7 +4,6 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential cmake git wget curl vim nano tmux htop tree \
-    catkin \
     python3-pip python3-pytest-cov python3-colcon-common-extensions \
     python3-vcstool python3-rosdep python3-dev \
     iputils-ping net-tools iproute2 dnsutils traceroute nmap iperf3 tcpdump \
@@ -52,9 +51,11 @@ RUN echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> /root/.bashrc
 WORKDIR /root/ros2_ws
 
 COPY dependencies.repos /tmp/dependencies.repos
+COPY ros2_ws/src /tmp/local_src
 
 RUN mkdir -p src && \
-    vcs import src < /tmp/dependencies.repos
+    vcs import src < /tmp/dependencies.repos && \
+    cp -a /tmp/local_src/. src/
     
 RUN git clone https://github.com/atenpas/gpd.git /tmp/gpd && \
     cd /tmp/gpd && \
