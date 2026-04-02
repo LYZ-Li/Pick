@@ -1,0 +1,16 @@
+repositories:
+  realsense-ros:
+    type: git
+    url: https://github.com/realsenseai/realsense-ros.git
+    version: ros2-development
+  moveit_task_constructor:
+    type: git
+    url: https://github.com/ros-planning/moveit_task_constructor.git
+    version: humble
+  easy_handeye2:
+    type: git
+    url: https://github.com/marcoesposito1988/easy_handeye2.git
+  grasp_detection_ros2:
+    type: git
+    url: https://github.com/socrob/grasp_detection_ros2.git
+    version: main

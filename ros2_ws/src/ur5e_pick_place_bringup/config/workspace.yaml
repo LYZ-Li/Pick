@@ -1,0 +1,32 @@
+workspace:
+  frame_id: base
+  min_x: 0.20
+  max_x: 0.80
+  min_y: -0.35
+  max_y: 0.35
+  min_z: -0.05
+  max_z: 0.40
+
+table_plane:
+  distance_threshold: 0.008
+  ransac_n: 3
+  num_iterations: 1000
+
+grasp_filter:
+  min_score: 0.5
+  min_z_axis_dot_world_z: 0.65
+  max_tcp_roll_deg: 180.0
+  max_tcp_pitch_deg: 50.0
+  pregrasp_offset: 0.12
+  grasp_offset: 0.015
+  lift_offset: 0.15
+
+place_pose:
+  frame_id: base
+  x: 0.55
+  y: -0.30
+  z: 0.20
+  qx: 0.0
+  qy: 1.0
+  qz: 0.0
+  qw: 0.0
