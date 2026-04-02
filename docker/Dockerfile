@@ -15,6 +15,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ros-humble-moveit-servo \
     ros-humble-moveit-ros-planning-interface \
     ros-humble-moveit-msgs \
+    ros-humble-moveit-task-constructor-capabilities \
+    ros-humble-moveit-task-constructor-core \
+    ros-humble-moveit-task-constructor-msgs \
+    ros-humble-moveit-task-constructor-visualization \
     ros-humble-geometric-shapes \
     ros-humble-tf2-eigen \
     ros-humble-tf2-sensor-msgs \

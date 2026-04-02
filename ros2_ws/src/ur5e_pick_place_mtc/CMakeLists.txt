@@ -7,12 +7,33 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
-find_package(rclcpp REQUIRED)
+find_package(control_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(rclcpp_action REQUIRED)
+find_package(std_srvs REQUIRED)
 find_package(moveit_msgs REQUIRED)
 find_package(moveit_ros_planning_interface REQUIRED)
 find_package(tf2_ros REQUIRED)
 find_package(tf2_eigen REQUIRED)
+
+add_executable(pick_place_server src/pick_place_server.cpp)
+ament_target_dependencies(
+  pick_place_server
+  control_msgs
+  geometry_msgs
+  moveit_msgs
+  moveit_ros_planning_interface
+  rclcpp
+  rclcpp_action
+  std_srvs
+  tf2_eigen
+  tf2_ros
+)
+
+install(TARGETS pick_place_server
+  DESTINATION lib/${PROJECT_NAME}
+)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)

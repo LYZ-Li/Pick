@@ -1,0 +1,154 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+  <xacro:include filename="$(find ur_description)/urdf/ur_macro.xacro"/>
+  <xacro:include filename="$(find robotiq_description)/urdf/robotiq_2f_85_macro.urdf.xacro"/>
+  <xacro:include filename="$(find robotiq_description)/urdf/ur_to_robotiq_adapter.urdf.xacro"/>
+
+  <xacro:macro name="d415_mount" params="parent prefix xyz:='0 0 0' rpy:='0 0 0'">
+    <link name="${prefix}camera_mount_link"/>
+    <joint name="${prefix}camera_mount_joint" type="fixed">
+      <parent link="${parent}"/>
+      <child link="${prefix}camera_mount_link"/>
+      <origin xyz="${xyz}" rpy="${rpy}"/>
+    </joint>
+
+    <link name="${prefix}camera_link">
+      <visual>
+        <geometry>
+          <box size="0.09 0.025 0.025"/>
+        </geometry>
+        <material name="${prefix}camera_gray">
+          <color rgba="0.25 0.25 0.25 1.0"/>
+        </material>
+      </visual>
+      <collision>
+        <geometry>
+          <box size="0.09 0.025 0.025"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <joint name="${prefix}camera_link_joint" type="fixed">
+      <parent link="${prefix}camera_mount_link"/>
+      <child link="${prefix}camera_link"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+
+    <link name="${prefix}camera_color_frame"/>
+    <joint name="${prefix}camera_color_joint" type="fixed">
+      <parent link="${prefix}camera_link"/>
+      <child link="${prefix}camera_color_frame"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+
+    <link name="${prefix}camera_color_optical_frame"/>
+    <joint name="${prefix}camera_color_optical_joint" type="fixed">
+      <parent link="${prefix}camera_color_frame"/>
+      <child link="${prefix}camera_color_optical_frame"/>
+      <origin xyz="0 0 0" rpy="${-pi/2} 0 ${-pi/2}"/>
+    </joint>
+
+    <link name="${prefix}camera_depth_frame"/>
+    <joint name="${prefix}camera_depth_joint" type="fixed">
+      <parent link="${prefix}camera_link"/>
+      <child link="${prefix}camera_depth_frame"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+
+    <link name="${prefix}camera_depth_optical_frame"/>
+    <joint name="${prefix}camera_depth_optical_joint" type="fixed">
+      <parent link="${prefix}camera_depth_frame"/>
+      <child link="${prefix}camera_depth_optical_frame"/>
+      <origin xyz="0 0 0" rpy="${-pi/2} 0 ${-pi/2}"/>
+    </joint>
+  </xacro:macro>
+
+  <xacro:macro name="ur5e_cell" params="
+    parent
+    *origin
+    ur_type
+    use_fake_hardware
+    gripper_com_port
+    include_gripper_ros2_control
+    camera_mount_mode
+    joint_limits_parameters_file
+    kinematics_parameters_file
+    physical_parameters_file
+    visual_parameters_file">
+
+    <joint name="world_to_cell_joint" type="fixed">
+      <parent link="${parent}"/>
+      <child link="cell_base"/>
+      <xacro:insert_block name="origin"/>
+    </joint>
+    <link name="cell_base"/>
+
+    <link name="table_link">
+      <visual>
+        <origin xyz="0.55 0.0 -0.04" rpy="0 0 0"/>
+        <geometry>
+          <box size="1.20 0.80 0.08"/>
+        </geometry>
+        <material name="table_color">
+          <color rgba="0.55 0.45 0.35 1.0"/>
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0.55 0.0 -0.04" rpy="0 0 0"/>
+        <geometry>
+          <box size="1.20 0.80 0.08"/>
+        </geometry>
+      </collision>
+    </link>
+    <joint name="cell_base_to_table_joint" type="fixed">
+      <parent link="cell_base"/>
+      <child link="table_link"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+
+    <link name="robot_mount"/>
+    <joint name="table_to_robot_mount_joint" type="fixed">
+      <parent link="table_link"/>
+      <child link="robot_mount"/>
+      <origin xyz="0.10 0.0 0.04" rpy="0 0 0"/>
+    </joint>
+
+    <xacro:ur_robot
+      name="${ur_type}"
+      tf_prefix=""
+      parent="robot_mount"
+      joint_limits_parameters_file="${joint_limits_parameters_file}"
+      kinematics_parameters_file="${kinematics_parameters_file}"
+      physical_parameters_file="${physical_parameters_file}"
+      visual_parameters_file="${visual_parameters_file}">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </xacro:ur_robot>
+
+    <xacro:ur_to_robotiq prefix="" parent="tool0" child="gripper_mount_link"/>
+    <xacro:robotiq_gripper
+      name="RobotiqGripperHardwareInterface"
+      prefix=""
+      parent="gripper_mount_link"
+      use_fake_hardware="${use_fake_hardware}"
+      include_ros2_control="${include_gripper_ros2_control}"
+      com_port="${gripper_com_port}">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </xacro:robotiq_gripper>
+
+    <xacro:if value="${camera_mount_mode == 'fixed'}">
+      <xacro:d415_mount
+        parent="table_link"
+        prefix=""
+        xyz="0.30 -0.35 0.70"
+        rpy="0 0.35 0.55"/>
+    </xacro:if>
+
+    <xacro:if value="${camera_mount_mode == 'wrist'}">
+      <xacro:d415_mount
+        parent="tool0"
+        prefix="wrist_"
+        xyz="0.04 0.00 0.09"
+        rpy="0 ${pi} ${pi/2}"/>
+    </xacro:if>
+  </xacro:macro>
+</robot>

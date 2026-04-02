@@ -1,0 +1,13 @@
+hardcoded_pick_place_server:
+  ros__parameters:
+    move_group_name: ur_manipulator
+    base_frame: base
+    approach_distance: 0.10
+    lift_distance: 0.12
+    home_joint_positions: [0.0, -1.57, -1.57, -1.57, 1.57, 0.0]
+    pick_pose:
+      position: [0.45, 0.00, 0.20]
+      orientation_xyzw: [0.0, 1.0, 0.0, 0.0]
+    place_pose:
+      position: [0.45, -0.25, 0.20]
+      orientation_xyzw: [0.0, 1.0, 0.0, 0.0]

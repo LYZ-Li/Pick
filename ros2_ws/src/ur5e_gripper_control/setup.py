@@ -1,31 +1,24 @@
 from setuptools import find_packages, setup
 
-package_name = 'ur5e_tabletop_perception'
+package_name = 'ur5e_gripper_control'
 
 setup(
     name=package_name,
     version='0.0.0',
     packages=find_packages(exclude=['test']),
     data_files=[
-        ('share/ament_index/resource_index/packages',
-            ['resource/' + package_name]),
+        ('share/ament_index/resource_index/packages', ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
     maintainer='yli336',
     maintainer_email='yli336@todo.todo',
-    description='TODO: Package description',
+    description='Simple open/close interface for the Robotiq gripper controller.',
     license='TODO: License declaration',
-    extras_require={
-        'test': [
-            'pytest',
-        ],
-    },
     entry_points={
         'console_scripts': [
-            'tabletop_perception_node = ur5e_tabletop_perception.tabletop_perception_node:main',
-            'supervisor_node = ur5e_tabletop_perception.supervisor_node:main',
+            'gripper_command_server = ur5e_gripper_control.gripper_command_server:main',
         ],
     },
 )

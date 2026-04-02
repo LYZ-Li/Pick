@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<robot name="ur5e_cell" xmlns:xacro="http://wiki.ros.org/xacro">
+  <xacro:include filename="$(find ur5e_cell_description)/urdf/ur5e_cell_macro.xacro"/>
+
+  <xacro:arg name="name" default="ur5e"/>
+  <xacro:arg name="ur_type" default="$(arg name)"/>
+  <xacro:arg name="robot_ip" default="0.0.0.0"/>
+  <xacro:arg name="use_fake_hardware" default="false"/>
+  <xacro:arg name="gripper_com_port" default="/dev/robotiq"/>
+  <xacro:arg name="include_gripper_ros2_control" default="false"/>
+  <xacro:arg name="camera_mount_mode" default="fixed"/>
+  <xacro:arg name="joint_limit_params" default="$(find ur_description)/config/$(arg ur_type)/joint_limits.yaml"/>
+  <xacro:arg name="kinematics_params" default="$(find ur_description)/config/$(arg ur_type)/default_kinematics.yaml"/>
+  <xacro:arg name="physical_params" default="$(find ur_description)/config/$(arg ur_type)/physical_parameters.yaml"/>
+  <xacro:arg name="visual_params" default="$(find ur_description)/config/$(arg ur_type)/visual_parameters.yaml"/>
+  <xacro:arg name="joint_limits_parameters_file" default="$(find ur_description)/config/$(arg ur_type)/joint_limits.yaml"/>
+  <xacro:arg name="kinematics_parameters_file" default="$(find ur_description)/config/$(arg ur_type)/default_kinematics.yaml"/>
+  <xacro:arg name="physical_parameters_file" default="$(find ur_description)/config/$(arg ur_type)/physical_parameters.yaml"/>
+  <xacro:arg name="visual_parameters_file" default="$(find ur_description)/config/$(arg ur_type)/visual_parameters.yaml"/>
+  <xacro:arg name="safety_limits" default="true"/>
+  <xacro:arg name="safety_pos_margin" default="0.15"/>
+  <xacro:arg name="safety_k_position" default="20"/>
+  <xacro:arg name="script_filename" default=""/>
+  <xacro:arg name="input_recipe_filename" default=""/>
+  <xacro:arg name="output_recipe_filename" default=""/>
+  <xacro:arg name="tf_prefix" default=""/>
+  <xacro:arg name="fake_sensor_commands" default="false"/>
+  <xacro:arg name="headless_mode" default="false"/>
+  <xacro:arg name="use_tool_communication" default="false"/>
+  <xacro:arg name="tool_parity" default="0"/>
+  <xacro:arg name="tool_baud_rate" default="115200"/>
+  <xacro:arg name="tool_stop_bits" default="1"/>
+  <xacro:arg name="tool_rx_idle_chars" default="1.5"/>
+  <xacro:arg name="tool_tx_idle_chars" default="3.5"/>
+  <xacro:arg name="tool_device_name" default="/tmp/ttyUR"/>
+  <xacro:arg name="tool_tcp_port" default="54321"/>
+  <xacro:arg name="tool_voltage" default="0"/>
+  <xacro:arg name="reverse_ip" default="0.0.0.0"/>
+  <xacro:arg name="script_command_port" default="50004"/>
+  <xacro:arg name="reverse_port" default="50001"/>
+  <xacro:arg name="script_sender_port" default="50002"/>
+  <xacro:arg name="trajectory_port" default="50003"/>
+
+  <link name="world"/>
+
+  <xacro:ur5e_cell
+    parent="world"
+    ur_type="$(arg ur_type)"
+    use_fake_hardware="$(arg use_fake_hardware)"
+    gripper_com_port="$(arg gripper_com_port)"
+    include_gripper_ros2_control="$(arg include_gripper_ros2_control)"
+    camera_mount_mode="$(arg camera_mount_mode)"
+    joint_limits_parameters_file="$(arg joint_limit_params)"
+    kinematics_parameters_file="$(arg kinematics_params)"
+    physical_parameters_file="$(arg physical_params)"
+    visual_parameters_file="$(arg visual_params)">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </xacro:ur5e_cell>
+</robot>
