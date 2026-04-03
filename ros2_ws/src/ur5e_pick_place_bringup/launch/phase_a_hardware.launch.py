@@ -27,6 +27,10 @@ def generate_launch_description():
     camera_mount = LaunchConfiguration('camera_mount')
     launch_gripper = LaunchConfiguration('launch_gripper')
     gripper_port = LaunchConfiguration('gripper_port')
+    robotiq_controllers_config = PathJoinSubstitution([
+        FindPackageShare('ur5e_pick_place_bringup'),
+        'config', 'robotiq_gripper_controllers.yaml',
+    ])
 
     # UR Robot Driver
     ur_driver_launch = IncludeLaunchDescription(
@@ -76,10 +80,7 @@ def generate_launch_description():
         name='robotiq_controller_manager',
         parameters=[
             {'robot_description': robotiq_description},
-            PathJoinSubstitution([
-                FindPackageShare('ur5e_pick_place_bringup'),
-                'config', 'robotiq_gripper_controllers.yaml',
-            ]),
+            robotiq_controllers_config,
         ],
         output='screen',
         condition=IfCondition(launch_gripper),
@@ -91,6 +92,7 @@ def generate_launch_description():
         arguments=[
             'joint_state_broadcaster',
             '-c', '/robotiq_controller_manager',
+            '-p', robotiq_controllers_config,
         ],
         output='screen',
         condition=IfCondition(launch_gripper),
@@ -102,6 +104,7 @@ def generate_launch_description():
         arguments=[
             'gripper_position_controller',
             '-c', '/robotiq_controller_manager',
+            '-p', robotiq_controllers_config,
         ],
         output='screen',
         condition=IfCondition(launch_gripper),
