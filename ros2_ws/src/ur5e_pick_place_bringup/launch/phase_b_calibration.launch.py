@@ -28,6 +28,14 @@ def generate_launch_description():
     calibration_config = os.path.join(
         bringup_share, 'config', 'phase_b_calibration.yaml'
     )
+    if not os.path.exists(calibration_config):
+        calibration_config = os.path.join(
+            '/root/ros2_ws',
+            'src',
+            'ur5e_pick_place_bringup',
+            'config',
+            'phase_b_calibration.yaml',
+        )
 
     with open(calibration_config, 'r', encoding='utf-8') as file_handle:
         config = yaml.safe_load(file_handle)
