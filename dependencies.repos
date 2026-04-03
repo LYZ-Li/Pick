@@ -10,6 +10,10 @@ repositories:
   easy_handeye2:
     type: git
     url: https://github.com/marcoesposito1988/easy_handeye2.git
+  ros2_robotiq_gripper:
+    type: git
+    url: https://github.com/PickNikRobotics/ros2_robotiq_gripper.git
+    version: humble
   grasp_detection_ros2:
     type: git
     url: https://github.com/socrob/grasp_detection_ros2.git

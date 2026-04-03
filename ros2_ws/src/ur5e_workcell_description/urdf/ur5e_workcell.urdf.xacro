@@ -1,0 +1,121 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="ur5e_workcell">
+
+  <!-- ============================================================ -->
+  <!-- Arguments                                                     -->
+  <!-- ============================================================ -->
+  <xacro:arg name="ur_type"          default="ur5e"/>
+  <xacro:arg name="robot_ip"         default="192.168.1.251"/>
+  <xacro:arg name="use_fake_hardware" default="false"/>
+  <xacro:arg name="camera_mount"     default="fixed"/>
+
+  <!-- Camera extrinsics for fixed (eye-to-hand) mount, overridden by calibration -->
+  <xacro:arg name="camera_x"   default="0.420"/>
+  <xacro:arg name="camera_y"   default="-0.015"/>
+  <xacro:arg name="camera_z"   default="0.865"/>
+  <xacro:arg name="camera_roll"  default="0.0"/>
+  <xacro:arg name="camera_pitch" default="0.0"/>
+  <xacro:arg name="camera_yaw"   default="0.0"/>
+
+  <!-- Camera offset for wrist (eye-in-hand) mount relative to tool0 -->
+  <xacro:arg name="wrist_camera_x"     default="0.0"/>
+  <xacro:arg name="wrist_camera_y"     default="-0.05"/>
+  <xacro:arg name="wrist_camera_z"     default="0.04"/>
+  <xacro:arg name="wrist_camera_roll"  default="0.0"/>
+  <xacro:arg name="wrist_camera_pitch" default="${-pi/6}"/>
+  <xacro:arg name="wrist_camera_yaw"   default="0.0"/>
+
+  <!-- ============================================================ -->
+  <!-- World / Base                                                  -->
+  <!-- ============================================================ -->
+  <link name="world"/>
+
+  <joint name="world_to_base" type="fixed">
+    <parent link="world"/>
+    <child link="base_link"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+
+  <!-- ============================================================ -->
+  <!-- UR5e Arm (from ur_description)                                -->
+  <!-- ============================================================ -->
+  <xacro:include filename="$(find ur_description)/urdf/ur_macro.xacro"/>
+
+  <xacro:ur_robot
+    name="$(arg ur_type)"
+    tf_prefix=""
+    parent="base_link"
+    joint_limits_parameters_file="$(find ur_description)/config/$(arg ur_type)/joint_limits.yaml"
+    kinematics_parameters_file="$(find ur_description)/config/$(arg ur_type)/default_kinematics.yaml"
+    physical_parameters_file="$(find ur_description)/config/$(arg ur_type)/physical_parameters.yaml"
+    visual_parameters_file="$(find ur_description)/config/$(arg ur_type)/visual_parameters.yaml"
+    use_fake_hardware="$(arg use_fake_hardware)"
+    headless_mode="false"
+    robot_ip="$(arg robot_ip)"
+  >
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </xacro:ur_robot>
+
+  <!-- ============================================================ -->
+  <!-- Robotiq 2F-85 Gripper (from robotiq_description)              -->
+  <!-- ============================================================ -->
+  <xacro:include filename="$(find robotiq_description)/urdf/robotiq_2f_85_macro.urdf.xacro"/>
+
+  <!-- Coupler: UR tool flange to Robotiq mounting -->
+  <joint name="tool0_to_gripper" type="fixed">
+    <parent link="tool0"/>
+    <child link="robotiq_85_base_link"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+
+  <xacro:robotiq_2f_85 prefix="" parent="robotiq_85_base_link">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </xacro:robotiq_2f_85>
+
+  <!-- ============================================================ -->
+  <!-- RealSense D415 Camera                                         -->
+  <!--   camera_mount="fixed" : eye-to-hand, mounted on a stand      -->
+  <!--   camera_mount="wrist" : eye-in-hand, mounted near tool0      -->
+  <!-- ============================================================ -->
+
+  <!-- Fixed (eye-to-hand) camera mount -->
+  <xacro:if value="${'$(arg camera_mount)' == 'fixed'}">
+    <link name="camera_mount_link"/>
+
+    <joint name="base_to_camera_mount" type="fixed">
+      <parent link="base_link"/>
+      <child link="camera_mount_link"/>
+      <origin xyz="$(arg camera_x) $(arg camera_y) $(arg camera_z)"
+              rpy="$(arg camera_roll) $(arg camera_pitch) $(arg camera_yaw)"/>
+    </joint>
+
+    <link name="camera_link"/>
+
+    <joint name="camera_mount_to_camera" type="fixed">
+      <parent link="camera_mount_link"/>
+      <child link="camera_link"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+  </xacro:if>
+
+  <!-- Wrist (eye-in-hand) camera mount -->
+  <xacro:if value="${'$(arg camera_mount)' == 'wrist'}">
+    <link name="wrist_camera_mount_link"/>
+
+    <joint name="tool0_to_camera_mount" type="fixed">
+      <parent link="tool0"/>
+      <child link="wrist_camera_mount_link"/>
+      <origin xyz="$(arg wrist_camera_x) $(arg wrist_camera_y) $(arg wrist_camera_z)"
+              rpy="$(arg wrist_camera_roll) $(arg wrist_camera_pitch) $(arg wrist_camera_yaw)"/>
+    </joint>
+
+    <link name="camera_link"/>
+
+    <joint name="wrist_camera_mount_to_camera" type="fixed">
+      <parent link="wrist_camera_mount_link"/>
+      <child link="camera_link"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+  </xacro:if>
+
+</robot>

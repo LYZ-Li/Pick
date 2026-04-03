@@ -1,0 +1,12 @@
+# Request: grasp and place parameters for MTC execution
+geometry_msgs/PoseStamped grasp_pose        # TCP pose at the grasp location
+float64 pregrasp_approach_distance  0.12    # distance to approach before grasping (m)
+float64 grasp_offset                0.015   # additional offset along approach direction (m)
+float64 lift_distance               0.15    # distance to lift after grasping (m)
+geometry_msgs/PoseStamped place_pose        # target place pose
+float64 gripper_open_width          0.085   # gripper opening width (m)
+float64 gripper_close_width         0.0     # gripper closing width (m)
+---
+# Response
+bool success
+string message
