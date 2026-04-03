@@ -49,7 +49,10 @@ WORKDIR /root/ros2_ws
 COPY dependencies.repos /tmp/dependencies.repos
 
 RUN mkdir -p src && \
-    vcs import src < /tmp/dependencies.repos
+    vcs import src < /tmp/dependencies.repos && \
+    if [ -f "src/ros2_robotiq_gripper/ros2_robotiq_gripper-not-released.${ROS_DISTRO}.repos" ]; then \
+        vcs import src --skip-existing --input "src/ros2_robotiq_gripper/ros2_robotiq_gripper-not-released.${ROS_DISTRO}.repos"; \
+    fi
     
 RUN git clone https://github.com/atenpas/gpd.git /tmp/gpd && \
     cd /tmp/gpd && \

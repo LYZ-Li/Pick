@@ -1,2 +1,2 @@
 #!/bin/bash
-docker compose -f docker/docker-compose.yml up --build
+docker exec -it ros2_ur5e_dev bash
