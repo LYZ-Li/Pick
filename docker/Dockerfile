@@ -53,7 +53,9 @@ RUN mkdir -p src && \
     if [ -f "src/ros2_robotiq_gripper/ros2_robotiq_gripper-not-released.${ROS_DISTRO}.repos" ]; then \
         vcs import src --skip-existing --input "src/ros2_robotiq_gripper/ros2_robotiq_gripper-not-released.${ROS_DISTRO}.repos"; \
     fi
-    
+
+COPY ros2_ws/src /root/ros2_ws/src
+
 RUN git clone https://github.com/atenpas/gpd.git /tmp/gpd && \
     cd /tmp/gpd && \
     mkdir build && cd build && \
@@ -68,7 +70,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 RUN . /opt/ros/${ROS_DISTRO}/setup.sh && \
-    colcon build --symlink-install
+    colcon build
 
 RUN echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> /root/.bashrc
 RUN echo "source /root/ros2_ws/install/setup.bash" >> /root/.bashrc
