@@ -8,6 +8,12 @@
   <xacro:arg name="robot_ip"         default="192.168.1.251"/>
   <xacro:arg name="use_fake_hardware" default="false"/>
   <xacro:arg name="camera_mount"     default="fixed"/>
+  <xacro:arg name="gripper_port"     default="/dev/robotiq"/>
+  <xacro:arg name="gripper_speed_multiplier" default="1.0"/>
+  <xacro:arg name="gripper_force_multiplier" default="0.5"/>
+  <xacro:arg name="gripper_max_speed" default="0.150"/>
+  <xacro:arg name="gripper_max_force" default="235.0"/>
+  <xacro:arg name="gripper_closed_position" default="0.7929"/>
 
   <!-- Camera extrinsics for fixed (eye-to-hand) mount, overridden by calibration -->
   <xacro:arg name="camera_x"   default="0.420"/>
@@ -60,6 +66,7 @@
   <!-- Robotiq 2F-85 Gripper (from robotiq_description)              -->
   <!-- ============================================================ -->
   <xacro:include filename="$(find robotiq_description)/urdf/robotiq_2f_85_macro.urdf.xacro"/>
+  <xacro:include filename="$(find robotiq_description)/urdf/2f_85.ros2_control.xacro"/>
 
   <!-- Coupler: UR tool flange to Robotiq mounting -->
   <joint name="tool0_to_gripper" type="fixed">
@@ -71,6 +78,17 @@
   <xacro:robotiq_2f_85 prefix="" parent="robotiq_85_base_link">
     <origin xyz="0 0 0" rpy="0 0 0"/>
   </xacro:robotiq_2f_85>
+
+  <xacro:robotiq_gripper_ros2_control
+    name="robotiq_gripper"
+    prefix=""
+    use_fake_hardware="$(arg use_fake_hardware)"
+    com_port="$(arg gripper_port)"
+    gripper_speed_multiplier="$(arg gripper_speed_multiplier)"
+    gripper_force_multiplier="$(arg gripper_force_multiplier)"
+    gripper_max_speed="$(arg gripper_max_speed)"
+    gripper_max_force="$(arg gripper_max_force)"
+    gripper_closed_position="$(arg gripper_closed_position)"/>
 
   <!-- ============================================================ -->
   <!-- RealSense D415 Camera                                         -->

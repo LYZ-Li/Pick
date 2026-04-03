@@ -47,6 +47,8 @@ def generate_launch_description():
     ur_type = LaunchConfiguration('ur_type')
     use_fake_hardware = LaunchConfiguration('use_fake_hardware')
     camera_mount = LaunchConfiguration('camera_mount')
+    launch_gripper = LaunchConfiguration('launch_gripper')
+    gripper_port = LaunchConfiguration('gripper_port')
     calibration_name = LaunchConfiguration('name')
     image_topic = LaunchConfiguration('detector_image_topic')
     camera_info_topic = LaunchConfiguration('detector_camera_info_topic')
@@ -72,6 +74,8 @@ def generate_launch_description():
             'ur_type': ur_type,
             'use_fake_hardware': use_fake_hardware,
             'camera_mount': camera_mount,
+            'launch_gripper': launch_gripper,
+            'gripper_port': gripper_port,
         }.items(),
     )
 
@@ -125,6 +129,16 @@ def generate_launch_description():
         DeclareLaunchArgument('robot_ip', default_value='192.168.1.251'),
         DeclareLaunchArgument('ur_type', default_value='ur5e'),
         DeclareLaunchArgument('use_fake_hardware', default_value='false'),
+        DeclareLaunchArgument(
+            'launch_gripper',
+            default_value='true',
+            description='Launch the Robotiq gripper ros2_control path from Phase A.',
+        ),
+        DeclareLaunchArgument(
+            'gripper_port',
+            default_value='/dev/robotiq',
+            description='Serial device exposed to the Robotiq driver.',
+        ),
         DeclareLaunchArgument(
             'camera_mount',
             default_value='fixed',

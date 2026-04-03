@@ -31,6 +31,7 @@ setup(
     entry_points={
         'console_scripts': [
             'aruco_marker_tf_bridge = ur5e_pick_place_bringup.aruco_marker_tf_bridge:main',
+            'gripper_command = ur5e_pick_place_bringup.gripper_command:main',
         ],
     },
 )
