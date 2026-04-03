@@ -5,6 +5,7 @@ services:
       dockerfile: docker/Dockerfile
     command: /bin/bash -lc "sleep infinity"
     container_name: ros2_ur5e_dev
+    hostname: ros2-ur5e-dev
     network_mode: "host"
     privileged: true
     environment:

@@ -59,7 +59,7 @@ RUN printf '%s\n' \
     'alias ls="ls --color=auto"' \
     'alias grep="grep --color=auto"' \
     'alias diff="diff --color=auto"' \
-    'export PS1="\[\e[1;32m\]\u@\h\[\e[0m\]:\[\e[1;34m\]\w\[\e[0m\]\\$ "' \
+    'export PS1="\[\e[1;33m\][docker:\h]\[\e[0m\] \[\e[1;32m\]\u\[\e[0m\]:\[\e[1;34m\]\w\[\e[0m\]\\$ "' \
     >> /root/.bashrc
 WORKDIR /root/ros2_ws
 
