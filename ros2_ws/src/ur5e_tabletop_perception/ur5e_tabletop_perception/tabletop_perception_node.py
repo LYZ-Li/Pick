@@ -22,7 +22,7 @@ class TabletopPerceptionNode(Node):
 
         self.declare_parameter('input_cloud_topic', '/camera/depth/color/points')
         self.declare_parameter('output_cloud_topic', '/tabletop/segmented_cloud')
-        self.declare_parameter('target_frame', 'base')
+        self.declare_parameter('target_frame', 'base_link')
         self.declare_parameter('workspace_yaml', '')
 
         self.input_cloud_topic = self.get_parameter('input_cloud_topic').value

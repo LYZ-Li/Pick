@@ -1,5 +1,5 @@
 workspace:
-  frame_id: base
+  frame_id: base_link
   min_x: 0.20
   max_x: 0.80
   min_y: -0.35
@@ -22,7 +22,7 @@ grasp_filter:
   lift_offset: 0.15
 
 place_pose:
-  frame_id: base
+  frame_id: base_link
   x: 0.55
   y: -0.30
   z: 0.20

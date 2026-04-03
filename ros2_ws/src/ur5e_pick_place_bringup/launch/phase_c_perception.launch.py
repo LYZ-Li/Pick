@@ -45,7 +45,7 @@ def generate_launch_description():
         parameters=[{
             'input_cloud_topic': '/camera/depth/color/points',
             'output_cloud_topic': '/tabletop/segmented_cloud',
-            'target_frame': 'base',
+            'target_frame': 'base_link',
             'workspace_yaml': workspace_yaml,
         }],
         output='screen',

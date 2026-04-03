@@ -5,7 +5,7 @@ Use this to validate that all hardware interfaces are stable before
 moving to calibration or perception.
 
 Camera mount options:
-  camera_mount:=fixed  (default) — eye-to-hand, static TF from base to camera
+  camera_mount:=fixed  (default) — eye-to-hand, static TF from base_link to camera
   camera_mount:=wrist            — eye-in-hand, camera TF from URDF on tool0
 """
 from launch import LaunchDescription
@@ -79,7 +79,7 @@ def generate_launch_description():
         arguments=[
             '--x', '0.420', '--y', '-0.015', '--z', '0.865',
             '--qx', '0.7071', '--qy', '0.7071', '--qz', '0.0', '--qw', '0.0',
-            '--frame-id', 'base', '--child-frame-id', 'camera_link',
+            '--frame-id', 'base_link', '--child-frame-id', 'camera_link',
         ],
         condition=LaunchConfigurationEquals('camera_mount', 'fixed'),
     )

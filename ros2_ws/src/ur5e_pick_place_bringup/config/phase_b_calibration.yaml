@@ -1,0 +1,24 @@
+aruco_board:
+  dictionary: DICT_ARUCO_ORIGINAL
+  columns: 3
+  rows: 4
+  marker_size_m: 0.04
+  marker_separation_m: 0.01
+  first_marker_id: 0
+  tracked_marker_id: 4
+
+charuco_board:
+  dictionary: DICT_ARUCO_ORIGINAL
+  squares_x: 5
+  squares_y: 7
+  square_length_m: 0.03
+  marker_length_m: 0.023
+
+phase_b:
+  calibration_name: ur5e_fixed_camera_calibration
+  image_topic: /camera/camera/color/image_raw
+  camera_info_topic: /camera/camera/color/camera_info
+  detector_camera_frame: camera_color_optical_frame
+  detector_reference_frame: camera_link
+  marker_frame: marker_frame
+  markers_topic: /aruco_tracker/markers

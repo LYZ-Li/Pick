@@ -9,7 +9,7 @@ For incremental validation, prefer the individual phase launch files:
   phase_f_loop.launch.py
 
 Camera mount options:
-  camera_mount:=fixed  (default) — eye-to-hand, static TF from base to camera
+  camera_mount:=fixed  (default) — eye-to-hand, static TF from base_link to camera
   camera_mount:=wrist            — eye-in-hand, camera TF from URDF on tool0
 """
 from launch import LaunchDescription
@@ -92,7 +92,7 @@ def generate_launch_description():
         arguments=[
             '--x', '0.420', '--y', '-0.015', '--z', '0.865',
             '--qx', '0.7071', '--qy', '0.7071', '--qz', '0.0', '--qw', '0.0',
-            '--frame-id', 'base', '--child-frame-id', 'camera_link',
+            '--frame-id', 'base_link', '--child-frame-id', 'camera_link',
         ],
         condition=LaunchConfigurationEquals('camera_mount', 'fixed'),
     )
@@ -104,7 +104,7 @@ def generate_launch_description():
         parameters=[{
             'input_cloud_topic': '/camera/depth/color/points',
             'output_cloud_topic': '/tabletop/segmented_cloud',
-            'target_frame': 'base',
+            'target_frame': 'base_link',
             'workspace_yaml': workspace_yaml,
         }],
         output='screen',

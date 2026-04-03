@@ -10,7 +10,7 @@ ENV FORCE_COLOR=1
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential cmake git wget curl vim nano tmux htop tree \
     python3-pip python3-pytest-cov python3-colcon-common-extensions \
-    python3-vcstool python3-rosdep python3-dev \
+    python3-vcstool python3-rosdep python3-dev python3-opencv python3-reportlab \
     iputils-ping net-tools iproute2 dnsutils traceroute nmap iperf3 tcpdump \
     usbutils udev \
     libpcl-dev pcl-tools \
@@ -40,6 +40,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ros-humble-ros2-controllers \
     ros-humble-controller-manager \
     ros-humble-gripper-controllers \
+    ros-humble-aruco-ros \
     python3-serial \
     && rm -rf /var/lib/apt/lists/*
 

@@ -7,7 +7,7 @@ live GPD output.
 
 To test, call the service manually:
   ros2 service call /execute_pick_place ur5e_pick_place_interfaces/srv/PickPlace \\
-    "{grasp_pose: {header: {frame_id: 'base'}, pose: {position: {x: 0.4, y: 0.0, z: 0.1}, orientation: {w: 0.0, x: 0.0, y: 1.0, z: 0.0}}}, place_pose: {header: {frame_id: 'base'}, pose: {position: {x: 0.55, y: -0.3, z: 0.2}, orientation: {w: 0.0, x: 0.0, y: 1.0, z: 0.0}}}}"
+    "{grasp_pose: {header: {frame_id: 'base_link'}, pose: {position: {x: 0.4, y: 0.0, z: 0.1}, orientation: {w: 0.0, x: 0.0, y: 1.0, z: 0.0}}}, place_pose: {header: {frame_id: 'base_link'}, pose: {position: {x: 0.55, y: -0.3, z: 0.2}, orientation: {w: 0.0, x: 0.0, y: 1.0, z: 0.0}}}}"
 """
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
