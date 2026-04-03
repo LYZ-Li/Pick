@@ -40,6 +40,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ros-humble-ros2-controllers \
     ros-humble-controller-manager \
     ros-humble-gripper-controllers \
+    ros-humble-foxglove-bridge \
     python3-serial \
     && rm -rf /var/lib/apt/lists/*
 
