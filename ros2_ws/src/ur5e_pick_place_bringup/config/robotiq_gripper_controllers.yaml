@@ -6,10 +6,9 @@ robotiq_controller_manager:
       type: joint_state_broadcaster/JointStateBroadcaster
 
     gripper_position_controller:
-      type: forward_command_controller/ForwardCommandController
+      type: position_controllers/JointGroupPositionController
 
 gripper_position_controller:
   ros__parameters:
     joints:
       - robotiq_85_left_knuckle_joint
-    interface_name: position
