@@ -63,13 +63,10 @@ def generate_launch_description():
         PathJoinSubstitution([FindExecutable(name='xacro')]),
         ' ',
         PathJoinSubstitution([
-            FindPackageShare('ur5e_workcell_description'),
-            'urdf', 'ur5e_workcell.urdf.xacro',
+            FindPackageShare('ur5e_pick_place_bringup'),
+            'urdf', 'robotiq_gripper_control.urdf.xacro',
         ]),
-        ' ur_type:=', ur_type,
-        ' robot_ip:=', robot_ip,
         ' use_fake_hardware:=', use_fake_hardware,
-        ' camera_mount:=', camera_mount,
         ' gripper_port:=', gripper_port,
     ])
 

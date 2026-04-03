@@ -16,6 +16,8 @@ setup(
             glob('launch/*.launch.py')),
         (os.path.join('share', package_name, 'config'),
             glob('config/*')),
+        (os.path.join('share', package_name, 'urdf'),
+            glob('urdf/*')),
     ],
     install_requires=['setuptools'],
     zip_safe=True,

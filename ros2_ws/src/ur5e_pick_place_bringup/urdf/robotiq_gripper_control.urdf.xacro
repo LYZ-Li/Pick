@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="robotiq_gripper_control">
+
+  <xacro:arg name="use_fake_hardware" default="false"/>
+  <xacro:arg name="gripper_port" default="/dev/robotiq"/>
+  <xacro:arg name="gripper_speed_multiplier" default="1.0"/>
+  <xacro:arg name="gripper_force_multiplier" default="0.5"/>
+  <xacro:arg name="gripper_max_speed" default="0.150"/>
+  <xacro:arg name="gripper_max_force" default="235.0"/>
+  <xacro:arg name="gripper_closed_position" default="0.7929"/>
+
+  <xacro:include filename="$(find robotiq_description)/urdf/2f_85.ros2_control.xacro"/>
+
+  <link name="robotiq_base"/>
+  <link name="robotiq_left_finger"/>
+
+  <joint name="robotiq_85_left_knuckle_joint" type="revolute">
+    <parent link="robotiq_base"/>
+    <child link="robotiq_left_finger"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="0.0" upper="$(arg gripper_closed_position)" effort="235.0" velocity="0.15"/>
+  </joint>
+
+  <xacro:robotiq_gripper_ros2_control
+    name="robotiq_gripper"
+    prefix=""
+    use_fake_hardware="$(arg use_fake_hardware)"
+    com_port="$(arg gripper_port)"
+    gripper_speed_multiplier="$(arg gripper_speed_multiplier)"
+    gripper_force_multiplier="$(arg gripper_force_multiplier)"
+    gripper_max_speed="$(arg gripper_max_speed)"
+    gripper_max_force="$(arg gripper_max_force)"
+    gripper_closed_position="$(arg gripper_closed_position)"/>
+
+</robot>
