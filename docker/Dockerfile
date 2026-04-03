@@ -1,6 +1,11 @@
 FROM osrf/ros:humble-desktop
 
 ENV DEBIAN_FRONTEND=noninteractive
+ENV TERM=xterm-256color
+ENV COLORTERM=truecolor
+ENV CLICOLOR=1
+ENV CLICOLOR_FORCE=1
+ENV FORCE_COLOR=1
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential cmake git wget curl vim nano tmux htop tree \
@@ -43,7 +48,19 @@ RUN pip3 install --no-cache-dir \
 
 RUN rosdep init || true && rosdep update --rosdistro=${ROS_DISTRO}
 
-RUN echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> /root/.bashrc
+RUN printf '%s\n' \
+    'source /opt/ros/${ROS_DISTRO}/setup.bash' \
+    'if [ -f /root/ros2_ws/install/setup.bash ]; then source /root/ros2_ws/install/setup.bash; fi' \
+    'export TERM=${TERM:-xterm-256color}' \
+    'export COLORTERM=${COLORTERM:-truecolor}' \
+    'export CLICOLOR=1' \
+    'export CLICOLOR_FORCE=1' \
+    'export FORCE_COLOR=1' \
+    'alias ls="ls --color=auto"' \
+    'alias grep="grep --color=auto"' \
+    'alias diff="diff --color=auto"' \
+    'export PS1="\[\e[1;32m\]\u@\h\[\e[0m\]:\[\e[1;34m\]\w\[\e[0m\]\\$ "' \
+    >> /root/.bashrc
 WORKDIR /root/ros2_ws
 
 COPY dependencies.repos /tmp/dependencies.repos
@@ -69,10 +86,13 @@ RUN apt-get update && \
     rosdep install --from-paths src --ignore-src -r -y --rosdistro=${ROS_DISTRO} && \
     rm -rf /var/lib/apt/lists/*
 
-RUN . /opt/ros/${ROS_DISTRO}/setup.sh && \
-    colcon build
-
-RUN echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> /root/.bashrc
-RUN echo "source /root/ros2_ws/install/setup.bash" >> /root/.bashrc
+RUN printf '%s\n' \
+    '#!/bin/bash' \
+    'set -e' \
+    'cd /root/ros2_ws' \
+    'source /opt/ros/${ROS_DISTRO}/setup.bash' \
+    'colcon build --symlink-install "$@"' \
+    > /usr/local/bin/build_workspace && \
+    chmod +x /usr/local/bin/build_workspace
 
 CMD ["/bin/bash"]

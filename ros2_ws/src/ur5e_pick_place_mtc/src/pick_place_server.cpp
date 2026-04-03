@@ -1,3 +1,5 @@
+#include <algorithm>
+#include <map>
 #include <memory>
 #include <string>
 
@@ -153,7 +155,7 @@ private:
       {
         auto stage = std::make_unique<mtc::stages::GenerateGraspPose>("generate grasp pose");
         stage->properties().configureInitFrom(mtc::Stage::PARENT);
-        stage->setPreGraspPose(gripper_joint_state(req->gripper_open_width));
+        stage->setPreGraspPose(gripper_robot_state(req->gripper_open_width));
         stage->setObject("target_object");
         stage->setAngleDelta(0);  // single grasp pose from request, no sweep
         stage->setMonitoredStage(task.stages()->findChild("current state"));
@@ -335,6 +337,18 @@ private:
     double ratio = 1.0 - std::clamp(width_m / 0.085, 0.0, 1.0);
     double joint_value = ratio * 0.8;
     return {{gripper_open_joint_, joint_value}};
+  }
+
+  moveit_msgs::msg::RobotState gripper_robot_state(double width_m) {
+    const auto joint_state = gripper_joint_state(width_m);
+
+    moveit_msgs::msg::RobotState robot_state_msg;
+    for (const auto& [joint_name, joint_value] : joint_state) {
+      robot_state_msg.joint_state.name.push_back(joint_name);
+      robot_state_msg.joint_state.position.push_back(joint_value);
+    }
+
+    return robot_state_msg;
   }
 
   void add_target_object(const geometry_msgs::msg::PoseStamped& grasp_pose) {

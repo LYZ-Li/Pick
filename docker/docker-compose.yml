@@ -3,6 +3,7 @@ services:
     build:
       context: ..
       dockerfile: docker/Dockerfile
+    command: /bin/bash -lc "sleep infinity"
     container_name: ros2_ur5e_dev
     network_mode: "host"
     privileged: true
@@ -10,6 +11,11 @@ services:
       - DISPLAY=${DISPLAY}
       - QT_X11_NO_MITSHM=1
       - ROS_DOMAIN_ID=0
+      - TERM=xterm-256color
+      - COLORTERM=truecolor
+      - CLICOLOR=1
+      - CLICOLOR_FORCE=1
+      - FORCE_COLOR=1
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
       - ~/.Xauthority:/root/.Xauthority:rw
