@@ -20,7 +20,11 @@ services:
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
       - ~/.Xauthority:/root/.Xauthority:rw
-      - ../ros2_ws/src:/root/ros2_ws/src:rw
+      - ../ros2_ws/src/ur5e_pick_place_bringup:/root/ros2_ws/src/ur5e_pick_place_bringup:rw
+      - ../ros2_ws/src/ur5e_pick_place_interfaces:/root/ros2_ws/src/ur5e_pick_place_interfaces:rw
+      - ../ros2_ws/src/ur5e_pick_place_mtc:/root/ros2_ws/src/ur5e_pick_place_mtc:rw
+      - ../ros2_ws/src/ur5e_tabletop_perception:/root/ros2_ws/src/ur5e_tabletop_perception:rw
+      - ../ros2_ws/src/ur5e_workcell_description:/root/ros2_ws/src/ur5e_workcell_description:rw
       - ../external_logs:/root/.ros/log:rw
       - /dev/bus/usb:/dev/bus/usb
       - /dev:/dev
