@@ -74,6 +74,7 @@ def generate_launch_description():
             'ur_type': ur_type,
             'use_fake_hardware': use_fake_hardware,
             'camera_mount': camera_mount,
+            'calibration_mode': 'true',
             'launch_gripper': launch_gripper,
             'gripper_port': gripper_port,
         }.items(),

@@ -15,6 +15,7 @@ from launch.conditions import IfCondition, LaunchConfigurationEquals
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import (
     Command, FindExecutable, LaunchConfiguration, PathJoinSubstitution,
+    PythonExpression,
 )
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
@@ -25,6 +26,7 @@ def generate_launch_description():
     ur_type = LaunchConfiguration('ur_type')
     use_fake_hardware = LaunchConfiguration('use_fake_hardware')
     camera_mount = LaunchConfiguration('camera_mount')
+    calibration_mode = LaunchConfiguration('calibration_mode')
     launch_gripper = LaunchConfiguration('launch_gripper')
     gripper_port = LaunchConfiguration('gripper_port')
     robotiq_controllers_config = PathJoinSubstitution([
@@ -137,13 +139,24 @@ def generate_launch_description():
             '--qx', '0.7071', '--qy', '0.7071', '--qz', '0.0', '--qw', '0.0',
             '--frame-id', 'base_link', '--child-frame-id', 'camera_link',
         ],
-        condition=LaunchConfigurationEquals('camera_mount', 'fixed'),
+        condition=IfCondition(PythonExpression([
+            "'",
+            camera_mount,
+            "' == 'fixed' and '",
+            calibration_mode,
+            "' != 'true'",
+        ])),
     )
 
     return LaunchDescription([
         DeclareLaunchArgument('robot_ip', default_value='192.168.1.251'),
         DeclareLaunchArgument('ur_type', default_value='ur5e'),
         DeclareLaunchArgument('use_fake_hardware', default_value='false'),
+        DeclareLaunchArgument(
+            'calibration_mode',
+            default_value='false',
+            description='Disable the placeholder fixed-camera TF while calibrating.',
+        ),
         DeclareLaunchArgument(
             'launch_gripper',
             default_value='true',
