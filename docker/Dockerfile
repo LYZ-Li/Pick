@@ -75,15 +75,6 @@ RUN mkdir -p src && \
 
 COPY ros2_ws/src /root/ros2_ws/src
 
-RUN git clone https://github.com/atenpas/gpd.git /tmp/gpd && \
-    cd /tmp/gpd && \
-    mkdir build && cd build && \
-    cmake .. && \
-    make -j$(nproc) && \
-    make install && \
-    rm -rf /tmp/gpd
-RUN ldconfig
-
 RUN apt-get update && \
     rosdep install --from-paths src --ignore-src -r -y --rosdistro=${ROS_DISTRO} && \
     rm -rf /var/lib/apt/lists/*
